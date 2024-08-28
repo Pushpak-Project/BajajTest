@@ -1,0 +1,37 @@
+
+public class HashCodeGenerator {
+
+	public static void main(String[] args) {
+	    // Hardcode arguments for testing within STS
+	    String[] testArgs = {"240345920065", "path/to/your/test.json"};
+	    // Replace the line below with testArgs
+	    // main(testArgs);
+	    if (testArgs.length != 2) {
+	        System.out.println("Usage: java -jar DestinationHashGenerator.jar <PRN> <jsonFilePath>");
+	        return;
+	    }
+
+	    String prn = testArgs[0].toLowerCase().replaceAll("\\s+", "");  // convert PRN to lower case and remove spaces
+	    String jsonFilePath = testArgs[1];
+	    String destinationValue = "";
+
+	    try {
+	        destinationValue = findFirstDestinationValue(new File(jsonFilePath));
+	        if (destinationValue == null) {
+	            System.out.println("No destination key found in the JSON file.");
+	            return;
+	        }
+	    } catch (IOException e) {
+	        System.err.println("Error reading the JSON file: " + e.getMessage());
+	        return;
+	    }
+
+	    String randomString = generateRandomString(8);
+	    String inputString = prn + destinationValue + randomString;
+	    String hash = generateMD5Hash(inputString);
+
+	    System.out.println(hash + ";" + randomString);
+	}
+
+
+}
